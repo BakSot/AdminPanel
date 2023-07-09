@@ -1,17 +1,17 @@
 import { InputBase, alpha, styled } from "@mui/material";
 
-export const BootstrapInput = styled(InputBase)(({ theme }) => ({
+export const Input = styled(InputBase)(({ theme }) => ({
   "label + &": {
     marginTop: theme.spacing(3),
   },
   "& .MuiInputBase-input": {
-    borderRadius: 4,
+    // borderRadius: 4,
     position: "relative",
     backgroundColor: theme.palette.mode === "light" ? "#F3F6F9" : "#1A2027",
     border: "1px solid",
     borderColor: theme.palette.mode === "light" ? "#E0E3E7" : "#2D3843",
     fontSize: 16,
-    width: "auto",
+    width: "500px",
     padding: "10px 12px",
     transition: theme.transitions.create([
       "border-color",

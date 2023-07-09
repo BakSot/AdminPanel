@@ -1,5 +1,5 @@
 import "./App.css";
-import { loader as getUsers } from "./pages/GetUsers";
+import { loader as getUser } from "./pages/GetUser";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./pages/Root";
 import ErrorPage from "./pages/Error";
@@ -17,12 +17,12 @@ const router = createBrowserRouter([
       {
         path: ":uid",
         id: "users-accounts",
-        loader: getUsers,
+        // loader: getUser,
         children: [
           {
             index: true,
             element: <Main />,
-            loader: getUsers,
+            // loader: getUser,
           },
         ],
       },

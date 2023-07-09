@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import List from "@mui/material/List";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
@@ -6,13 +6,27 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import ListItemButton from "@mui/material/ListItemButton";
 import { useSelector } from "react-redux";
-import { openUser, selectClickedUser, selectUsers } from "../store/users-slice";
+import {
+  openUser,
+  selectClickedUser,
+  selectAllUsers,
+  getUser,
+} from "../store/users-slice";
 import { useDispatch } from "react-redux";
 
 export default function UsersAvatar() {
-  const userDetails = useSelector(selectUsers);
+  const userDetails = useSelector(selectAllUsers);
   const dispatch = useDispatch();
   const selectedIndex = useSelector(selectClickedUser);
+
+  const fetchUserHandler = async (id: string) => {
+    const requestOptions = {
+      headers: { "Content-Type": "application/json" },
+    };
+    const response = await fetch(`/users/${id}`, requestOptions);
+    const data = await response.json();
+    dispatch(getUser(data));
+  };
 
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -21,17 +35,9 @@ export default function UsersAvatar() {
   ) => {
     const selectedUser = {
       index: index,
-      id: u_id,
     };
     dispatch(openUser(selectedUser));
-  };
-
-  const handleName = () => {
-    console.log('userDetails',userDetails)
-    console.log('selectedIndex',selectedIndex.index)
-    const a = userDetails.find((u) => u.id === selectedIndex.id);
-    console.log(a?.name, "sdggsdsgsg");
-    return a?.name
+    fetchUserHandler(u_id);
   };
 
   return (
@@ -39,7 +45,6 @@ export default function UsersAvatar() {
       <List
         sx={{
           width: "100%",
-          maxWidth: 360,
           bgcolor: "background.paper",
           position: "relative",
           overflow: "auto",

@@ -1,32 +1,61 @@
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
-import { BootstrapInput } from "./styled";
+import { Input } from "./styled";
 import { Grid } from "@mui/material";
 import { useSelector } from "react-redux";
-import { selectClickedUser, selectUsers } from "../store/users-slice";
+import { selectUser } from "../store/users-slice";
+import { useEffect, useState } from "react";
+import { useForm, Form } from "react-hook-form";
 
 const UserForm = () => {
-  const userDetails = useSelector(selectUsers);
-  const selectedIndex = useSelector(selectClickedUser);
+  const userDetails = useSelector(selectUser);
+  const [username, setUsername] = useState<string>();
+  const [email, setEmail] = useState<string>();
+  const [phone, setPhone] = useState<string>();
+  const [address, setAddress] = useState<string>();
+  const [company, setCompany] = useState<string>();
 
-  const handleName = () => {
-    console.log('userDetails',userDetails)
-    console.log('selectedIndex',selectedIndex.index)
-    const a = userDetails.find((u) => u.id === selectedIndex.id);
-    console.log(a?.name, "sdggsdsgsg");
-    return a?.name
+  const handleTextFieldValues = () => {
+    if (userDetails) {
+      setUsername(userDetails.name);
+      setEmail(userDetails.email);
+      setPhone(userDetails.phone);
+      setAddress(userDetails.address);
+      setCompany(userDetails.company);
+    }
+  };
+
+  useEffect(() => {
+    handleTextFieldValues();
+  }, [userDetails]);
+
+  const nameChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(event.target.value);
+  };
+  const emailChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+  const phoneChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPhone(event.target.value);
+  };
+  const addressChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAddress(event.target.value);
+  };
+  const companyChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCompany(event.target.value);
   };
 
   return (
-    <Grid container>
+    <Grid container paddingLeft={"40px"}>
       <Grid xs={12}>
         <FormControl variant="standard">
           <InputLabel shrink htmlFor="name-input">
             Name
           </InputLabel>
-          <BootstrapInput
-            defaultValue={handleName}
+          <Input
             id="name-input"
+            value={username}
+            onChange={nameChangeHandler}
           />
         </FormControl>
       </Grid>
@@ -35,7 +64,7 @@ const UserForm = () => {
           <InputLabel shrink htmlFor="email-input">
             Email address
           </InputLabel>
-          <BootstrapInput id="email-input" />
+          <Input id="email-input" value={email} onChange={emailChangeHandler} />
         </FormControl>
       </Grid>
       <Grid xs={12}>
@@ -43,7 +72,7 @@ const UserForm = () => {
           <InputLabel shrink htmlFor="phone-input">
             Phone
           </InputLabel>
-          <BootstrapInput id="phone-input" />
+          <Input id="phone-input" value={phone} onChange={phoneChangeHandler} />
         </FormControl>
       </Grid>
       <Grid xs={12}>
@@ -51,7 +80,11 @@ const UserForm = () => {
           <InputLabel shrink htmlFor="address-input">
             Address
           </InputLabel>
-          <BootstrapInput id="address-input" />
+          <Input
+            id="address-input"
+            value={address}
+            onChange={addressChangeHandler}
+          />
         </FormControl>
       </Grid>
       <Grid xs={12}>
@@ -59,7 +92,11 @@ const UserForm = () => {
           <InputLabel shrink htmlFor="company-input">
             Company
           </InputLabel>
-          <BootstrapInput id="company-input" />
+          <Input
+            id="company-input"
+            value={company}
+            onChange={companyChangeHandler}
+          />
         </FormControl>
       </Grid>
     </Grid>

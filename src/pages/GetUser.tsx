@@ -4,7 +4,7 @@ interface MyAccountInterface {
   u_id: string;
 }
 
-const GetUsers = () => {
+const GetUser = () => {
   const data: MyAccountInterface = useRouteLoaderData(
     "users-accounts"
   ) as MyAccountInterface;
@@ -16,7 +16,7 @@ const GetUsers = () => {
     </>
   );
 };
-export default GetUsers;
+export default GetUser;
 
 export async function loader({
   request,
@@ -27,7 +27,7 @@ export async function loader({
 }) {
   const uid = params.uid;
   console.log("u_id", uid);
-  const response = await fetch(`http://localhost:3001/userdgxjzs`);
+  const response = await fetch(`http://localhost:3000/${uid}`);
   console.log("res", response);
 
   if (!response.ok) {

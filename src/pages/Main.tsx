@@ -1,18 +1,19 @@
-import { Container, Grid, selectClasses } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import UserForm from "../components/UserForm";
 import UsersAvatar from "../components/UsersAvatas";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { selectUsers, showUsersProfile } from "../store/users-slice";
+import { selectAllUsers, getAllUsers, selectUser } from "../store/users-slice";
 import { useRouteLoaderData } from "react-router-dom";
 import { useSelector } from "react-redux";
+import ActionButtons from "../components/ActionButtons";
 
 export interface UsersDetails {
   address: string;
   company: string;
   email: string;
   id: string;
-  name: number;
+  name: string;
   phone: string;
   photo: string;
 }
@@ -20,38 +21,38 @@ export interface UsersDetails {
 export interface UsersDetailsInterface extends Array<UsersDetails> {}
 
 const Main = () => {
-  const UsersDetails: UsersDetailsInterface = useRouteLoaderData(
-    "users"
-  ) as UsersDetailsInterface;
-
+  // const UsersDetails: UsersDetailsInterface = useRouteLoaderData(
+  //   "users"
+  // ) as UsersDetailsInterface;
   const dispatch = useDispatch();
-  const savedUsers = useSelector(selectUsers);
+  const savedUsers = useSelector(selectAllUsers);
+  const userDetails = useSelector(selectUser);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchUsersHandler = useCallback(async () => {
+    setIsLoading(true);
+    const response = await fetch("/users");
+    const data = await response.json();
+    const myUsers: UsersDetails[] = data.users;
+
+    myUsers.map((u) => {
+      const existingUser = savedUsers.find((userId) => userId.id === u.id);
+      if (!existingUser) {
+        const usersStore = {
+          email: u.email,
+          id: u.id,
+          name: u.name,
+          photo: u.photo,
+        };
+        dispatch(getAllUsers(usersStore));
+        setIsLoading(false);
+      }
+    });
+  }, []);
 
   useEffect(() => {
-    fetch("/users")
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        const myUsers: UsersDetails[] = data.users;
-
-        myUsers.map((u) => {
-          const existingUser = savedUsers.find((userId) => userId.id === u.id);
-          if (!existingUser) {
-            const usersStore = {
-              address: u?.address,
-              company: u.company,
-              email: u.email,
-              id: u.id,
-              name: u.name,
-              phone: u.phone,
-              photo: u.photo,
-            };
-            dispatch(showUsersProfile(usersStore));
-          }
-        });
-      });
-  }, []);
+    fetchUsersHandler();
+  }, [fetchUsersHandler]);
 
   return (
     <Container>
@@ -60,7 +61,17 @@ const Main = () => {
           <UsersAvatar />
         </Grid>
         <Grid xs={6}>
-          <UserForm />
+          {userDetails.id ? (
+            <>
+              <UserForm />
+              <ActionButtons />
+            </>
+          ) : (
+            <>
+              {!isLoading && <div> Select a user to edit </div>}
+              {isLoading && <p> Loading...</p>}
+            </>
+          )}
         </Grid>
       </Grid>
     </Container>
