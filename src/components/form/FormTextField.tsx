@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, Form } from "react-hook-form";
 import { useEffect } from "react";
 import { DevTool } from "@hookform/devtools";
 import InputLabel from "@mui/material/InputLabel";
@@ -10,6 +10,7 @@ import {
   selectCancelButton,
   toggleSaveBtn,
 } from "../../store/users-slice";
+import ActionButtons from "../ActionButtons";
 
 interface IUserDetails {
   name: string | undefined;
@@ -17,6 +18,7 @@ interface IUserDetails {
   address: string | undefined;
   phone: string | undefined;
   company: string | undefined;
+  id: string;
 }
 
 const FormTextField = ({
@@ -25,6 +27,7 @@ const FormTextField = ({
   address,
   phone,
   company,
+  id,
 }: IUserDetails) => {
   const dispatch = useDispatch();
   const resetForm = useSelector(selectCancelButton);
@@ -58,7 +61,7 @@ const FormTextField = ({
   dispatch(toggleSaveBtn(isDirty));
 
   return (
-    <>
+    <Form action={`users/${id}`} control={control} method="put">
       <DevTool control={control} />
       <FormControl variant="standard">
         <InputLabel shrink htmlFor="name-input">
@@ -93,7 +96,8 @@ const FormTextField = ({
         </InputLabel>
         <Input id="company-input" {...register("company")} name="company" />
       </FormControl>
-    </>
+      <ActionButtons id={id} />
+    </Form>
   );
 };
 export default FormTextField;

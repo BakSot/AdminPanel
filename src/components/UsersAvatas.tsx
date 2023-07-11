@@ -11,7 +11,6 @@ import {
   selectClickedUser,
   selectAllUsers,
   getUser,
-  handleCancelButton,
 } from "../store/users-slice";
 import { useDispatch } from "react-redux";
 

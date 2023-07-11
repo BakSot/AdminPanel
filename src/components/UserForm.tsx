@@ -17,10 +17,10 @@ const UserForm = () => {
             phone={userDetails.phone}
             address={userDetails.address}
             company={userDetails.company}
+            id={userDetails.id}
           />
         </Grid>
       </Grid>
-      <ActionButtons />
     </>
   );
 };

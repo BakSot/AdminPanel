@@ -1,19 +1,20 @@
-import { useEffect } from "react";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { useSelector } from "react-redux";
-import {
-  selectToggleBtn,
-  selectCancelButton,
-  handleCancelButton,
-} from "../store/users-slice";
+import { selectToggleBtn, handleCancelButton, toggleSaveBtn } from "../store/users-slice";
 import { useDispatch } from "react-redux";
 
-const ActionButtons = () => {
+interface IActionButtons {
+  id: string;
+}
+
+const ActionButtons = ({ id }: IActionButtons) => {
   const dispatch = useDispatch();
   const isFormDirty = useSelector(selectToggleBtn);
 
-  const saveBtnHandler = () => {};
+  const saveBtnHandler = () => {
+    dispatch(toggleSaveBtn(false));
+  };
 
   const cancelBtnHandler = () => {
     dispatch(handleCancelButton(true));
@@ -24,6 +25,7 @@ const ActionButtons = () => {
       <Button
         variant="contained"
         disabled={!isFormDirty}
+        type="submit"
         onClick={saveBtnHandler}
       >
         Save
