@@ -1,7 +1,12 @@
+import { useEffect } from "react";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { useSelector } from "react-redux";
-import { selectToggleBtn } from "../store/users-slice";
+import {
+  selectToggleBtn,
+  selectCancelButton,
+  handleCancelButton,
+} from "../store/users-slice";
 import { useDispatch } from "react-redux";
 
 const ActionButtons = () => {
@@ -10,7 +15,9 @@ const ActionButtons = () => {
 
   const saveBtnHandler = () => {};
 
-  const cancelBtnHandler = () => {};
+  const cancelBtnHandler = () => {
+    dispatch(handleCancelButton(true));
+  };
 
   return (
     <Stack spacing={1} direction="row-reverse" paddingTop={"20px"}>

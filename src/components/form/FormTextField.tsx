@@ -1,12 +1,15 @@
-import TextField from "@mui/material/TextField";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { DevTool } from "@hookform/devtools";
 import InputLabel from "@mui/material/InputLabel";
 import { Input } from "../styled";
 import FormControl from "@mui/material/FormControl";
-import { useDispatch } from "react-redux";
-import { toggleSaveBtn } from "../../store/users-slice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  handleCancelButton,
+  selectCancelButton,
+  toggleSaveBtn,
+} from "../../store/users-slice";
 
 interface IUserDetails {
   name: string | undefined;
@@ -24,10 +27,11 @@ const FormTextField = ({
   company,
 }: IUserDetails) => {
   const dispatch = useDispatch();
+  const resetForm = useSelector(selectCancelButton);
+
   const {
     register,
     control,
-    getFieldState,
     formState: { isDirty },
     reset,
   } = useForm({
@@ -48,7 +52,8 @@ const FormTextField = ({
       address: address,
       company: company,
     });
-  }, [name, email, phone, address, company]);
+    dispatch(handleCancelButton(false));
+  }, [name, email, phone, address, company, resetForm]);
 
   dispatch(toggleSaveBtn(isDirty));
 
