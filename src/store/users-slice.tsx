@@ -21,6 +21,7 @@ export interface IClasses {
   getAllUsers: IUsers[];
   getUser: IUserForm;
   selectedUser: ISelectedUser;
+  isFormDirty: boolean;
 }
 
 const initialState: IClasses = {
@@ -35,6 +36,7 @@ const initialState: IClasses = {
     phone: "",
   },
   selectedUser: { index: undefined },
+  isFormDirty: false,
 };
 
 const usersSlice = createSlice({
@@ -50,13 +52,18 @@ const usersSlice = createSlice({
     openUser: (state: IClasses, action: PayloadAction<ISelectedUser>) => {
       state.selectedUser = action.payload;
     },
+    toggleSaveBtn: (state: IClasses, action: PayloadAction<boolean>) => {
+      state.isFormDirty = action.payload;
+    },
   },
 });
 
-export const { getAllUsers, getUser, openUser } = usersSlice.actions;
+export const { getAllUsers, getUser, openUser, toggleSaveBtn } =
+  usersSlice.actions;
 
 export const selectAllUsers = (state: RootState) => state.users.getAllUsers;
 export const selectUser = (state: RootState) => state.users.getUser;
 export const selectClickedUser = (state: RootState) => state.users.selectedUser;
+export const selectToggleBtn = (state: RootState) => state.users.isFormDirty;
 
 export default usersSlice.reducer;

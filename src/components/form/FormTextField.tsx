@@ -5,6 +5,8 @@ import { DevTool } from "@hookform/devtools";
 import InputLabel from "@mui/material/InputLabel";
 import { Input } from "../styled";
 import FormControl from "@mui/material/FormControl";
+import { useDispatch } from "react-redux";
+import { toggleSaveBtn } from "../../store/users-slice";
 
 interface IUserDetails {
   name: string | undefined;
@@ -21,6 +23,7 @@ const FormTextField = ({
   phone,
   company,
 }: IUserDetails) => {
+  const dispatch = useDispatch();
   const {
     register,
     control,
@@ -45,16 +48,9 @@ const FormTextField = ({
       address: address,
       company: company,
     });
-  }, [name, email]);
+  }, [name, email, phone, address, company]);
 
-  const nameState = getFieldState("name");
-  const emailState = getFieldState("email");
-  const addressState = getFieldState("address");
-  const phoneState = getFieldState("phone");
-  const companyState = getFieldState("company");
-
-  console.log("nameState", nameState.isDirty);
-  console.log("emailState", emailState.isDirty);
+  dispatch(toggleSaveBtn(isDirty));
 
   return (
     <>

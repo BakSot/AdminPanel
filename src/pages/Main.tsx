@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import { selectAllUsers, getAllUsers, selectUser } from "../store/users-slice";
 import { useRouteLoaderData } from "react-router-dom";
 import { useSelector } from "react-redux";
-import ActionButtons from "../components/ActionButtons";
 
 export interface UsersDetails {
   address: string;
@@ -64,7 +63,6 @@ const Main = () => {
           {userDetails.id ? (
             <>
               <UserForm />
-              <ActionButtons />
             </>
           ) : (
             <>
