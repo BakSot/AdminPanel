@@ -13,8 +13,11 @@ import {
   getUser,
 } from "../store/users-slice";
 import { useDispatch } from "react-redux";
+import { useMediaQuery } from "@mui/material";
 
 export default function UsersAvatar() {
+  const desktop = useMediaQuery("(min-width:600px)");
+  console.log("desktop", desktop);
   const userDetails = useSelector(selectAllUsers);
   const dispatch = useDispatch();
   const selectedIndex = useSelector(selectClickedUser);
@@ -48,7 +51,7 @@ export default function UsersAvatar() {
           bgcolor: "background.paper",
           position: "relative",
           overflow: "auto",
-          maxHeight: 400,
+          maxHeight: desktop ? 400 : "100%",
           "& ul": { padding: 0 },
         }}
         subheader={<li />}
@@ -64,21 +67,23 @@ export default function UsersAvatar() {
                 <ListItemAvatar>
                   <Avatar alt="Travis Howard" src={user.photo} />
                 </ListItemAvatar>
-                <ListItemText
-                  primary={user.name}
-                  secondary={
-                    <Fragment>
-                      <Typography
-                        sx={{ display: "inline" }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        {user.email}
-                      </Typography>
-                    </Fragment>
-                  }
-                />
+                {desktop ? (
+                  <ListItemText
+                    primary={user.name}
+                    secondary={
+                      <Fragment>
+                        <Typography
+                          sx={{ display: "inline" }}
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                        >
+                          {user.email}
+                        </Typography>
+                      </Fragment>
+                    }
+                  />
+                ) : null}
               </ListItemButton>
             ))}
           </ul>

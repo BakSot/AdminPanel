@@ -1,14 +1,14 @@
-import { Grid } from "@mui/material";
+import { Grid, useMediaQuery } from "@mui/material";
 import { useSelector } from "react-redux";
 import { selectUser } from "../store/users-slice";
 import FormTextField from "./form/FormTextField";
 
 const UserForm = () => {
   const userDetails = useSelector(selectUser);
-
+  const desktop = useMediaQuery("(min-width:600px)");
   return (
     <>
-      <Grid container paddingLeft={"40px"}>
+      <Grid container paddingLeft={desktop ? "40px" : "20px"}>
         <Grid xs={12}>
           <FormTextField
             name={userDetails.name}

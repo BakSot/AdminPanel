@@ -14,7 +14,7 @@ import {
 import ActionButtons from "../ActionButtons";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { FormHelperText } from "@mui/material";
+import { FormHelperText, useMediaQuery } from "@mui/material";
 
 const schema = yup.object({
   name: yup.string().required("Name is required").max(15),
@@ -43,6 +43,7 @@ const FormTextField = ({
 }: IUserDetails) => {
   const dispatch = useDispatch();
   const resetForm = useSelector(selectCancelButton);
+  const desktop = useMediaQuery("(min-width:600px)");
 
   const {
     register,
@@ -95,7 +96,12 @@ const FormTextField = ({
         >
           Name
         </InputLabel>
-        <Input id="name-input" {...register("name")} name="name" />
+        <Input
+          id="name-input"
+          desktop={desktop}
+          {...register("name")}
+          name="name"
+        />
         <FormHelperText sx={{ color: "red" }}>
           {errors.name?.message}
         </FormHelperText>
@@ -104,7 +110,12 @@ const FormTextField = ({
         <InputLabel shrink htmlFor="email-input">
           E-mail Address
         </InputLabel>
-        <Input id="email-input" {...register("email")} name="email" />
+        <Input
+          id="email-input"
+          desktop={desktop}
+          {...register("email")}
+          name="email"
+        />
         <FormHelperText sx={{ color: "red" }}>
           {errors.email?.message}
         </FormHelperText>
@@ -114,7 +125,12 @@ const FormTextField = ({
         <InputLabel shrink htmlFor="phone-input">
           Phone
         </InputLabel>
-        <Input id="phone-input" {...register("phone")} name="phone" />
+        <Input
+          id="phone-input"
+          desktop={desktop}
+          {...register("phone")}
+          name="phone"
+        />
         <FormHelperText sx={{ color: "red" }}>
           {errors.phone?.message}
         </FormHelperText>
@@ -124,16 +140,26 @@ const FormTextField = ({
         <InputLabel shrink htmlFor="address-input">
           Address
         </InputLabel>
-        <Input id="address-input" {...register("address")} name="address" />
+        <Input
+          id="address-input"
+          desktop={desktop}
+          {...register("address")}
+          name="address"
+        />
       </FormControl>
 
       <FormControl variant="standard">
         <InputLabel shrink htmlFor="company-input">
           Company
         </InputLabel>
-        <Input id="company-input" {...register("company")} name="company" />
+        <Input
+          id="company-input"
+          desktop={desktop}
+          {...register("company")}
+          name="company"
+        />
       </FormControl>
-      <ActionButtons id={id} errors={errors}/>
+      <ActionButtons id={id} errors={errors} />
     </Form>
   );
 };
