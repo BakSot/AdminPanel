@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { useSelector } from "react-redux";
@@ -20,7 +19,7 @@ const ActionButtons = ({ id }: IActionButtons) => {
   const saveBtnHandler = () => {
     setTimeout(() => {
       dispatch(toggleSaveBtn(false));
-    }, 3000);
+    }, 500);
   };
 
   const cancelBtnHandler = () => {

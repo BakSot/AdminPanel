@@ -6,6 +6,8 @@ import { Input } from "../styled";
 import FormControl from "@mui/material/FormControl";
 import { useDispatch, useSelector } from "react-redux";
 import {
+    IUserForm,
+  getUser,
   handleCancelButton,
   selectCancelButton,
   toggleSaveBtn,
@@ -38,6 +40,7 @@ const FormTextField = ({
     control,
     formState: { isDirty },
     reset,
+    watch,
   } = useForm({
     defaultValues: {
       name: name,
@@ -47,6 +50,7 @@ const FormTextField = ({
       company: company,
     },
   });
+  const watchAllFields = watch();
 
   useEffect(() => {
     reset({
@@ -61,8 +65,17 @@ const FormTextField = ({
 
   dispatch(toggleSaveBtn(isDirty));
 
+  const updatedUser: IUserForm = { ...watchAllFields, id, photo:'dd' };
+
   return (
-    <Form action={`users/${id}`} control={control} method="put">
+    <Form
+      action={`users/${id}`}
+      control={control}
+      method="put"
+      onSubmit={() => {
+        dispatch(getUser(updatedUser));
+      }}
+    >
       <DevTool control={control} />
       <FormControl variant="standard">
         <InputLabel shrink htmlFor="name-input">
