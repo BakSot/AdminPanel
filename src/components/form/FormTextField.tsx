@@ -11,6 +11,7 @@ import {
   toggleSaveBtn,
 } from "../../store/users-slice";
 import ActionButtons from "../ActionButtons";
+import Button from "@mui/material/Button";
 
 interface IUserDetails {
   name: string | undefined;
@@ -60,6 +61,10 @@ const FormTextField = ({
 
   dispatch(toggleSaveBtn(isDirty));
 
+  const handler =()=>{
+    console.log('SUBMITTED?>???')
+  }
+
   return (
     <Form action={`users/${id}`} control={control} method="put">
       <DevTool control={control} />
@@ -97,6 +102,15 @@ const FormTextField = ({
         <Input id="company-input" {...register("company")} name="company" />
       </FormControl>
       <ActionButtons id={id} />
+      {/* <button onClick={handler}>save</button> */}
+      {/* <Button
+        variant="contained"
+        type="submit"
+        // disabled={!isFormDirty}
+        onClick={handler}
+      >
+        Save
+      </Button> */}
     </Form>
   );
 };
