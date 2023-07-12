@@ -10,15 +10,18 @@ import { useDispatch } from "react-redux";
 
 interface IActionButtons {
   id: string;
+  errors: any;
 }
 
-const ActionButtons = ({ id }: IActionButtons) => {
+const ActionButtons = ({ id, errors }: IActionButtons) => {
   const dispatch = useDispatch();
   const isFormDirty: boolean = useSelector(selectToggleBtn);
 
   const saveBtnHandler = () => {
     setTimeout(() => {
-      dispatch(toggleSaveBtn(false));
+      if (!errors) {
+        dispatch(toggleSaveBtn(false));
+      }
     }, 500);
   };
 

@@ -2,15 +2,15 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "./index";
 
 export interface IUsers {
-  email?: string;
+  email: string;
   id: string;
-  name?: string;
-  photo?: string;
+  name: string;
+  photo: string;
 }
 export interface IUserForm extends IUsers {
-  address?: string;
-  company?: string;
-  phone?: string;
+  address: string;
+  company: string;
+  phone: string;
 }
 
 export interface ISelectedUser {
