@@ -21,7 +21,6 @@ const ActionButtons = ({ id }: IActionButtons) => {
     setTimeout(() => {
       dispatch(toggleSaveBtn(false));
     }, 3000);
-    console.log("entered");
   };
 
   const cancelBtnHandler = () => {
