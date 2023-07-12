@@ -17,7 +17,7 @@ import { useMediaQuery } from "@mui/material";
 
 export default function UsersAvatar() {
   const desktop = useMediaQuery("(min-width:600px)");
-  console.log("desktop", desktop);
+  
   const userDetails = useSelector(selectAllUsers);
   const dispatch = useDispatch();
   const selectedIndex = useSelector(selectClickedUser);
@@ -60,6 +60,7 @@ export default function UsersAvatar() {
           <ul>
             {userDetails.map((user, index) => (
               <ListItemButton
+                key={index}
                 selected={selectedIndex.index === index}
                 onClick={(event) => handleListItemClick(event, index, user.id)}
                 alignItems="flex-start"

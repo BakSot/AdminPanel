@@ -26,9 +26,8 @@ export async function loader({
   params: any;
 }) {
   const uid = params.uid;
-  console.log("u_id", uid);
+
   const response = await fetch(`http://localhost:3000/${uid}`);
-  console.log("res", response);
 
   if (!response.ok) {
     return json({ message: "Could not fetch classes." }, { status: 500 });

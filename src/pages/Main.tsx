@@ -56,10 +56,10 @@ const Main = () => {
   return (
     <Container>
       <Grid container>
-        <Grid xs={3} md={6}>
+        <Grid item xs={3} md={6}>
           <UsersAvatar />
         </Grid>
-        <Grid xs={9} md={6}>
+        <Grid item xs={9} md={6}>
           {userDetails.id ? (
             <>
               <UserForm />

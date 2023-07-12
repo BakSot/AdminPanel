@@ -9,7 +9,7 @@ const UserForm = () => {
   return (
     <>
       <Grid container paddingLeft={desktop ? "40px" : "20px"}>
-        <Grid xs={12}>
+        <Grid item xs={12}>
           <FormTextField
             name={userDetails.name}
             email={userDetails.email}
