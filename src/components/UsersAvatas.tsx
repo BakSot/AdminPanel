@@ -1,5 +1,4 @@
-import { Fragment } from "react";
-import List from "@mui/material/List";
+import { Fragment, useEffect } from "react";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
@@ -14,22 +13,16 @@ import {
 } from "../store/users-slice";
 import { useDispatch } from "react-redux";
 import { useMediaQuery } from "@mui/material";
+import { StyledList } from "./styled";
+import { json, useLoaderData } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function UsersAvatar() {
   const desktop = useMediaQuery("(min-width:600px)");
-  
-  const userDetails = useSelector(selectAllUsers);
+  const fetchedUsers: any = useLoaderData();
+  const usersDetails = useSelector(selectAllUsers);
   const dispatch = useDispatch();
   const selectedIndex = useSelector(selectClickedUser);
-
-  const fetchUserHandler = async (id: string) => {
-    const requestOptions = {
-      headers: { "Content-Type": "application/json" },
-    };
-    const response = await fetch(`/users/${id}`, requestOptions);
-    const data = await response.json();
-    dispatch(getUser(data));
-  };
 
   const handleListItemClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -40,25 +33,21 @@ export default function UsersAvatar() {
       index: index,
     };
     dispatch(openUser(selectedUser));
-    fetchUserHandler(u_id);
   };
 
+  useEffect(() => {
+    dispatch(getUser(fetchedUsers));
+  }, [fetchedUsers]);
+
   return (
-    <>
-      <List
-        sx={{
-          width: "100%",
-          bgcolor: "background.paper",
-          position: "relative",
-          overflow: "auto",
-          maxHeight: desktop ? 400 : "100%",
-          "& ul": { padding: 0 },
-        }}
-        subheader={<li />}
-      >
-        <li key={`section-${"sectionId"}`}>
-          <ul>
-            {userDetails.map((user, index) => (
+    <StyledList desktop={desktop.toString()} subheader={<li />}>
+      <li key={`section-${"sectionId"}`}>
+        <ul>
+          {usersDetails.map((user, index) => (
+            <Link
+              to={user.id}
+              style={{ textDecoration: "none", color: "black" }}
+            >
               <ListItemButton
                 key={index}
                 selected={selectedIndex.index === index}
@@ -86,10 +75,23 @@ export default function UsersAvatar() {
                   />
                 ) : null}
               </ListItemButton>
-            ))}
-          </ul>
-        </li>
-      </List>
-    </>
+            </Link>
+          ))}
+        </ul>
+      </li>
+    </StyledList>
   );
+}
+
+export async function loader({ params }: { params: any }) {
+  const id = params.uid;
+  const response = await fetch(`/users/${id}`);
+  if (!response.ok) {
+    return json(
+      { message: "Could not fetch the selected user" },
+      { status: 500 }
+    );
+  } else {
+    return response;
+  }
 }

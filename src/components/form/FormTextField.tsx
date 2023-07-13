@@ -6,9 +6,11 @@ import { Input } from "../styled";
 import FormControl from "@mui/material/FormControl";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  IUserForm,
   getUser,
   handleCancelButton,
   selectCancelButton,
+  selectUser,
   toggleSaveBtn,
 } from "../../store/users-slice";
 import ActionButtons from "../ActionButtons";
@@ -17,21 +19,22 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { FormHelperText, useMediaQuery } from "@mui/material";
 
 const schema = yup.object({
-  name: yup.string().required("Name is required").max(15),
+  name: yup.string().required("Name is required"),
   email: yup.string().email("Fill in a valid email address"),
   phone: yup.string().required("Phone is required"),
   address: yup.string(),
   company: yup.string(),
 });
 
-interface IUserDetails {
-  name: string;
-  email: string;
-  address: string;
-  phone: string;
-  company: string;
-  id: string;
-}
+// interface IUserDetails {
+//   name: string;
+//   email?: string;
+//   address?: string;
+//   phone: string;
+//   company?: string;
+//   id: string;
+//   photo?: string;
+// }
 
 const FormTextField = ({
   name,
@@ -40,7 +43,8 @@ const FormTextField = ({
   phone,
   company,
   id,
-}: IUserDetails) => {
+  photo,
+}: IUserForm) => {
   const dispatch = useDispatch();
   const resetForm = useSelector(selectCancelButton);
   const desktop = useMediaQuery("(min-width:600px)");
@@ -76,11 +80,11 @@ const FormTextField = ({
 
   dispatch(toggleSaveBtn(isDirty));
 
-  const updatedUser: any = { ...watchAllFields, id, photo: "dd" };
+  const updatedUser: IUserForm = { ...watchAllFields, id, photo };
 
   return (
     <Form
-      action={`users/${id}`}
+      action={`${id}`}
       control={control}
       method="put"
       onSubmit={() => {
@@ -98,7 +102,7 @@ const FormTextField = ({
         </InputLabel>
         <Input
           id="name-input"
-          desktop={desktop}
+          desktop={desktop.toString()}
           {...register("name")}
           name="name"
         />
@@ -112,7 +116,7 @@ const FormTextField = ({
         </InputLabel>
         <Input
           id="email-input"
-          desktop={desktop}
+          desktop={desktop.toString()}
           {...register("email")}
           name="email"
         />
@@ -127,7 +131,7 @@ const FormTextField = ({
         </InputLabel>
         <Input
           id="phone-input"
-          desktop={desktop}
+          desktop={desktop.toString()}
           {...register("phone")}
           name="phone"
         />
@@ -142,7 +146,7 @@ const FormTextField = ({
         </InputLabel>
         <Input
           id="address-input"
-          desktop={desktop}
+          desktop={desktop.toString()}
           {...register("address")}
           name="address"
         />
@@ -154,7 +158,7 @@ const FormTextField = ({
         </InputLabel>
         <Input
           id="company-input"
-          desktop={desktop}
+          desktop={desktop.toString()}
           {...register("company")}
           name="company"
         />

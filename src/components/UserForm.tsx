@@ -6,6 +6,7 @@ import FormTextField from "./form/FormTextField";
 const UserForm = () => {
   const userDetails = useSelector(selectUser);
   const desktop = useMediaQuery("(min-width:600px)");
+
   return (
     <>
       <Grid container paddingLeft={desktop ? "40px" : "20px"}>
@@ -17,6 +18,7 @@ const UserForm = () => {
             address={userDetails.address}
             company={userDetails.company}
             id={userDetails.id}
+            photo={userDetails.photo}
           />
         </Grid>
       </Grid>

@@ -1,6 +1,6 @@
-import { InputBase, alpha, styled } from "@mui/material";
+import { InputBase, alpha, styled, List } from "@mui/material";
 
-export const Input = styled(InputBase)<{ desktop: boolean }>(
+export const Input = styled(InputBase)<{ desktop: string }>(
   ({ theme, desktop }) => ({
     "label + &": {
       marginTop: theme.spacing(3),
@@ -11,7 +11,7 @@ export const Input = styled(InputBase)<{ desktop: boolean }>(
       border: "1px solid",
       borderColor: theme.palette.mode === "light" ? "#E0E3E7" : "#2D3843",
       fontSize: 16,
-      width: desktop ? "500px" : "200px",
+      width: desktop === "true" ? "500px" : "200px",
       padding: "10px 0 12px 0 ",
       transition: theme.transitions.create([
         "border-color",
@@ -37,3 +37,12 @@ export const Input = styled(InputBase)<{ desktop: boolean }>(
     },
   })
 );
+
+export const StyledList = styled(List)<{ desktop: string }>(({ desktop }) => ({
+  width: "100%",
+  bgcolor: "background.paper",
+  position: "relative",
+  overflow: "auto",
+  maxHeight: desktop ==='true' ? 400 : "100%",
+  "& ul": { padding: 0 },
+}));

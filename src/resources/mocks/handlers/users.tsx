@@ -13,6 +13,7 @@ export const usersHandlers = [
   }),
   rest.put("/users/:uid", (req, res, ctx) => {
     const { uid } = req.params;
+    console.log("uid", uid);
     const selectedUser = users.users.find((u) => u.id === uid);
     return res(ctx.status(200), ctx.delay(500), ctx.json(selectedUser));
   }),
