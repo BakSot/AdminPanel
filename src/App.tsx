@@ -1,28 +1,53 @@
-import "./App.css";
-import { loader as getUser } from "./pages/GetUser";
+import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./pages/Root";
+import UsersRootLayout from "./pages/UsersRoot";
 import ErrorPage from "./pages/Error";
-import Main from "./pages/Main";
 import { Provider } from "react-redux";
 import { store } from "./store";
 
+const Main = lazy(() => import("./pages/Main"));
+const HomePage = lazy(() => import("./pages/HomePage"));
+
 const router = createBrowserRouter([
   {
-    path: "/users",
+    path: "/",
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <Main /> },
       {
-        path: ":uid",
-        id: "users-accounts",
-        // loader: getUser,
+        index: true,
+        element: (
+          <Suspense fallback={<p>Loading...</p>}>
+            <HomePage />
+          </Suspense>
+        ),
+      },
+      {
+        path: "users",
+        element: <UsersRootLayout />,
         children: [
           {
             index: true,
-            element: <Main />,
-            // loader: getUser,
+            element: (
+              <Suspense fallback={<p>Loading...</p>}>
+                <Main />
+              </Suspense>
+            ),
+            loader: () =>
+              import("./pages/Main").then((module) => module.loader()),
+          },
+          {
+            path: ":uid",
+            element: (
+              <Suspense fallback={<p>Loading...</p>}>
+                <Main />
+              </Suspense>
+            ),
+            loader: (meta) =>
+              import("./components/UsersAvatas").then((module) =>
+                module.loader(meta)
+              ),
           },
         ],
       },

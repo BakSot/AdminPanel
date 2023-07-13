@@ -4,9 +4,8 @@ import UsersAvatar from "../components/UsersAvatas";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { selectAllUsers, getAllUsers, selectUser } from "../store/users-slice";
-import { useRouteLoaderData } from "react-router-dom";
 import { useSelector } from "react-redux";
-import ActionButtons from "../components/ActionButtons";
+import { json, useLoaderData, useRouteLoaderData } from "react-router-dom";
 
 export interface UsersDetails {
   address: string;
@@ -21,21 +20,19 @@ export interface UsersDetails {
 export interface UsersDetailsInterface extends Array<UsersDetails> {}
 
 const Main = () => {
-  // const UsersDetails: UsersDetailsInterface = useRouteLoaderData(
-  //   "users"
-  // ) as UsersDetailsInterface;
+  const usersDetailts: any = useLoaderData();
   const dispatch = useDispatch();
   const savedUsers = useSelector(selectAllUsers);
   const userDetails = useSelector(selectUser);
   const [isLoading, setIsLoading] = useState(false);
+  console.log("MAIN");
 
   const fetchUsersHandler = useCallback(async () => {
     setIsLoading(true);
-    const response = await fetch("/users");
-    const data = await response.json();
-    const myUsers: UsersDetails[] = data.users;
 
-    myUsers.map((u) => {
+    const myUsers: UsersDetails[] = usersDetailts?.users;
+
+    myUsers?.map((u) => {
       const existingUser = savedUsers.find((userId) => userId.id === u.id);
       if (!existingUser) {
         const usersStore = {
@@ -57,14 +54,13 @@ const Main = () => {
   return (
     <Container>
       <Grid container>
-        <Grid xs={6}>
+        <Grid item xs={3} md={6}>
           <UsersAvatar />
         </Grid>
-        <Grid xs={6}>
+        <Grid item xs={9} md={6}>
           {userDetails.id ? (
             <>
               <UserForm />
-              <ActionButtons />
             </>
           ) : (
             <>
@@ -79,3 +75,12 @@ const Main = () => {
 };
 
 export default Main;
+
+export async function loader() {
+  const response = await fetch("http://localhost:3000/users");
+  if (!response.ok) {
+    return json({ message: "Could not fetch users" }, { status: 500 });
+  } else {
+    return response;
+  }
+}
