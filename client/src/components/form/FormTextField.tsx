@@ -106,7 +106,7 @@ const FormTextField = ({
           {...register("name")}
           name="name"
         />
-        <StyledFormHelperText>{errors.name?.message}</StyledFormHelperText>
+        <StyledFormHelperText>{errors?.name?.message}</StyledFormHelperText>
       </FormControl>
       <FormControl variant="standard">
         <InputLabel shrink htmlFor="email-input">
@@ -118,7 +118,7 @@ const FormTextField = ({
           {...register("email")}
           name="email"
         />
-        <StyledFormHelperText>{errors.email?.message}</StyledFormHelperText>
+        <StyledFormHelperText>{errors?.email?.message}</StyledFormHelperText>
       </FormControl>
 
       <FormControl variant="standard" required>
@@ -131,7 +131,7 @@ const FormTextField = ({
           {...register("phone")}
           name="phone"
         />
-        <StyledFormHelperText>{errors.phone?.message}</StyledFormHelperText>
+        <StyledFormHelperText>{errors?.phone?.message}</StyledFormHelperText>
       </FormControl>
 
       <FormControl variant="standard">

@@ -41,13 +41,13 @@ const Main = () => {
     const myUsers: UsersDetails[] = usersDetailts?.users;
 
     myUsers?.map((u) => {
-      const existingUser = savedUsers.find((userId) => userId.id === u.id);
+      const existingUser = savedUsers?.find((userId) => userId?.id === u?.id);
       if (!existingUser) {
         const usersStore = {
-          email: u.email,
-          id: u.id,
-          name: u.name,
-          photo: u.photo,
+          email: u?.email,
+          id: u?.id,
+          name: u?.name,
+          photo: u?.photo,
         };
         dispatch(getAllUsers(usersStore));
         setIsLoading(false);

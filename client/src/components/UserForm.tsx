@@ -20,13 +20,13 @@ const UserForm = () => {
       <StyledGrid container desktop={desktop.toString()}>
         <Grid item xs={12}>
           <FormTextField
-            name={userDetails.name}
-            email={userDetails.email}
-            phone={userDetails.phone}
-            address={userDetails.address}
-            company={userDetails.company}
-            id={userDetails.id}
-            photo={userDetails.photo}
+            name={userDetails?.name}
+            email={userDetails?.email}
+            phone={userDetails?.phone}
+            address={userDetails?.address}
+            company={userDetails?.company}
+            id={userDetails?.id}
+            photo={userDetails?.photo}
           />
         </Grid>
       </StyledGrid>

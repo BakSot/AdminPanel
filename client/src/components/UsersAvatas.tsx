@@ -52,9 +52,9 @@ export default function UsersAvatar() {
     <StyledList desktop={desktop.toString()} subheader={<li />}>
       <li key={`section-${"sectionId"}`}>
         <ul>
-          {usersDetails.map((user, index) => (
+          {usersDetails?.map((user, index) => (
             <NavLink
-              to={`/users/${user.id}`}
+              to={`/users/${user?.id}`}
               style={({ isActive }) => ({
                 color: isActive ? "white" : "black",
                 textDecoration: "none",
@@ -62,18 +62,18 @@ export default function UsersAvatar() {
               key={index}
             >
               <StyledButtonList
-                selected={selectedIndex.index === index}
+                selected={selectedIndex?.index === index}
                 onClick={() => handleListItemClick(index)}
                 alignItems="flex-start"
               >
                 <ListItemAvatar>
-                  <Avatar alt="Travis Howard" src={user.photo} />
+                  <Avatar alt="Travis Howard" src={user?.photo} />
                 </ListItemAvatar>
                 {desktop ? (
                   <ListItemText
-                    primary={user.name}
+                    primary={user?.name}
                     secondary={
-                      <Typography variant={"body2"}>{user.email}</Typography>
+                      <Typography variant={"body2"}>{user?.email}</Typography>
                     }
                   />
                 ) : null}
@@ -92,7 +92,7 @@ export default function UsersAvatar() {
  * @returns response
  */
 export async function loader({ params }: { params: any }) {
-  const id = params.uid;
+  const id = params?.uid;
   const response = await fetch(`/users/${id}`);
   if (!response.ok) {
     return json(
