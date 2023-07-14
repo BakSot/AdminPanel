@@ -1,4 +1,13 @@
-import { InputBase, alpha, styled, List } from "@mui/material";
+import {
+  InputBase,
+  alpha,
+  styled,
+  List,
+  ListItemButton,
+  FormHelperText,
+  Button,
+  Grid,
+} from "@mui/material";
 
 export const Input = styled(InputBase)<{ desktop: string }>(
   ({ theme, desktop }) => ({
@@ -7,8 +16,8 @@ export const Input = styled(InputBase)<{ desktop: string }>(
     },
     "& .MuiInputBase-input": {
       position: "relative",
-      backgroundColor: theme.palette.mode === "light" ? "#F3F6F9" : "#1A2027",
-      border: "1px solid",
+      backgroundColor: 'theme.palette.mode === "light" ? "#F3F6F9" : "#1A2027"',
+      border: "1px solid #ececec",
       borderColor: theme.palette.mode === "light" ? "#E0E3E7" : "#2D3843",
       fontSize: 16,
       width: desktop === "true" ? "500px" : "200px",
@@ -43,6 +52,39 @@ export const StyledList = styled(List)<{ desktop: string }>(({ desktop }) => ({
   bgcolor: "background.paper",
   position: "relative",
   overflow: "auto",
-  maxHeight: desktop ==='true' ? 400 : "100%",
+  maxHeight: desktop === "true" ? 400 : "100%",
   "& ul": { padding: 0 },
+}));
+
+export const StyledButtonList = styled(ListItemButton)({
+  "&.Mui-selected": {
+    backgroundColor: "#1b68b3",
+    "&:hover": {
+      backgroundColor: "#e8e8e8",
+      color: "black",
+    },
+  },
+  "&:hover": {
+    backgroundColor: "#e8e8e8",
+    color: "black",
+  },
+});
+
+export const StyledFormHelperText = styled(FormHelperText)({
+  color: "red",
+});
+
+export const SaveButton = styled(Button)({
+  backgroundColor: "#1b68b3",
+  textTransform: "none",
+});
+
+export const CancelButton = styled(Button)({
+  backgroundColor: "#f7f7f7",
+  color: "grey",
+  textTransform: "none",
+});
+
+export const StyledGrid = styled(Grid)<{ desktop: string }>(({ desktop }) => ({
+  paddingLeft: desktop === "true" ? "40px" : "20px",
 }));

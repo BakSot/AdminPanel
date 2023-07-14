@@ -1,5 +1,4 @@
 import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
 import { useSelector } from "react-redux";
 import {
   selectToggleBtn,
@@ -7,16 +6,30 @@ import {
   toggleSaveBtn,
 } from "../store/users-slice";
 import { useDispatch } from "react-redux";
+import { CancelButton, SaveButton } from "./styled";
 
+/**
+ * Interfaces
+ */
 interface IActionButtons {
-  id: string;
   errors: any;
 }
 
-const ActionButtons = ({ id, errors }: IActionButtons) => {
+/**
+ * Shows Save & Cancel Buttons
+ * @param param0 IActionButtons
+ * @returns JSX.Element
+ */
+const ActionButtons = ({ errors }: IActionButtons) => {
+  /**
+   * Hooks
+   */
   const dispatch = useDispatch();
   const isFormDirty: boolean = useSelector(selectToggleBtn);
 
+  /**
+   * Save button handler
+   */
   const saveBtnHandler = () => {
     setTimeout(() => {
       if (!errors) {
@@ -25,24 +38,25 @@ const ActionButtons = ({ id, errors }: IActionButtons) => {
     }, 500);
   };
 
+  /**
+   * Cancel Button Handler
+   */
   const cancelBtnHandler = () => {
     dispatch(handleCancelButton(true));
   };
 
   return (
     <Stack spacing={1} direction="row-reverse" paddingTop={"20px"}>
-      <Button
+      <SaveButton
         variant="contained"
         type="submit"
         onClick={saveBtnHandler}
         disabled={!isFormDirty}
       >
         Save
-      </Button>
+      </SaveButton>
       {isFormDirty && (
-        <Button variant="outlined" onClick={cancelBtnHandler}>
-          Cancel
-        </Button>
+        <CancelButton onClick={cancelBtnHandler}>Cancel</CancelButton>
       )}
     </Stack>
   );

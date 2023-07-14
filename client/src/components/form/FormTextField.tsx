@@ -2,7 +2,7 @@ import { useForm, Form } from "react-hook-form";
 import { useEffect } from "react";
 import { DevTool } from "@hookform/devtools";
 import InputLabel from "@mui/material/InputLabel";
-import { Input } from "../styled";
+import { Input, StyledFormHelperText } from "../styled";
 import FormControl from "@mui/material/FormControl";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -10,14 +10,16 @@ import {
   getUser,
   handleCancelButton,
   selectCancelButton,
-  selectUser,
   toggleSaveBtn,
 } from "../../store/users-slice";
 import ActionButtons from "../ActionButtons";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { FormHelperText, useMediaQuery } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
 
+/**
+ * Validation schema for the form
+ */
 const schema = yup.object({
   name: yup.string().required("Name is required"),
   email: yup.string().email("Fill in a valid email address"),
@@ -26,16 +28,11 @@ const schema = yup.object({
   company: yup.string(),
 });
 
-// interface IUserDetails {
-//   name: string;
-//   email?: string;
-//   address?: string;
-//   phone: string;
-//   company?: string;
-//   id: string;
-//   photo?: string;
-// }
-
+/**
+ * Application Form
+ * @param param0 IUserForm
+ * @returns JSX.Element
+ */
 const FormTextField = ({
   name,
   email,
@@ -45,10 +42,12 @@ const FormTextField = ({
   id,
   photo,
 }: IUserForm) => {
+  /**
+   * Hooks
+   */
   const dispatch = useDispatch();
   const resetForm = useSelector(selectCancelButton);
   const desktop = useMediaQuery("(min-width:600px)");
-
   const {
     register,
     control,
@@ -67,8 +66,9 @@ const FormTextField = ({
   });
   const watchAllFields = watch();
 
-  console.log("FormTextField Rendered");
-
+  /**
+   * Effects
+   */
   useEffect(() => {
     reset({
       name: name,
@@ -97,11 +97,7 @@ const FormTextField = ({
     >
       <DevTool control={control} />
       <FormControl variant="standard" required>
-        <InputLabel
-          shrink
-          htmlFor="name-input"
-          sx={{ color: errors.name && "red" }}
-        >
+        <InputLabel shrink htmlFor="name-input">
           Name
         </InputLabel>
         <Input
@@ -110,9 +106,7 @@ const FormTextField = ({
           {...register("name")}
           name="name"
         />
-        <FormHelperText sx={{ color: "red" }}>
-          {errors.name?.message}
-        </FormHelperText>
+        <StyledFormHelperText>{errors.name?.message}</StyledFormHelperText>
       </FormControl>
       <FormControl variant="standard">
         <InputLabel shrink htmlFor="email-input">
@@ -124,9 +118,7 @@ const FormTextField = ({
           {...register("email")}
           name="email"
         />
-        <FormHelperText sx={{ color: "red" }}>
-          {errors.email?.message}
-        </FormHelperText>
+        <StyledFormHelperText>{errors.email?.message}</StyledFormHelperText>
       </FormControl>
 
       <FormControl variant="standard" required>
@@ -139,9 +131,7 @@ const FormTextField = ({
           {...register("phone")}
           name="phone"
         />
-        <FormHelperText sx={{ color: "red" }}>
-          {errors.phone?.message}
-        </FormHelperText>
+        <StyledFormHelperText>{errors.phone?.message}</StyledFormHelperText>
       </FormControl>
 
       <FormControl variant="standard">
@@ -167,7 +157,7 @@ const FormTextField = ({
           name="company"
         />
       </FormControl>
-      <ActionButtons id={id} errors={errors} />
+      <ActionButtons errors={errors} />
     </Form>
   );
 };

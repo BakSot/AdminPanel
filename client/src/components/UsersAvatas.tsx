@@ -1,9 +1,8 @@
-import { Fragment, useEffect } from "react";
+import { useEffect } from "react";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
-import ListItemButton from "@mui/material/ListItemButton";
 import { useSelector } from "react-redux";
 import {
   openUser,
@@ -13,21 +12,24 @@ import {
 } from "../store/users-slice";
 import { useDispatch } from "react-redux";
 import { useMediaQuery } from "@mui/material";
-import { StyledList } from "./styled";
+import { StyledButtonList, StyledList } from "./styled";
 import { json, useRouteLoaderData } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
+/**
+ * List of Users
+ * @returns JSX.Element
+ */
 export default function UsersAvatar() {
+  /**
+   * Hooks
+   */
   const desktop = useMediaQuery("(min-width:600px)");
   const fetchedUsers: any = useRouteLoaderData("users-details");
   const selectedUser: any = useRouteLoaderData("selected-user");
-
   const usersDetails = useSelector(selectAllUsers);
   const dispatch = useDispatch();
   const selectedIndex = useSelector(selectClickedUser);
-
-  console.log("fetchedUsers", fetchedUsers);
-  console.log("selectedUser", selectedUser);
 
   /**
    * Handles the selection of user on click
@@ -39,9 +41,11 @@ export default function UsersAvatar() {
     dispatch(openUser(opendUser));
   };
 
+  /**
+   * Effects
+   */
   useEffect(() => {
     dispatch(getUser(selectedUser));
-    console.log("USE EFFECT @ AVATAR");
   }, [selectedUser]);
 
   return (
@@ -49,12 +53,15 @@ export default function UsersAvatar() {
       <li key={`section-${"sectionId"}`}>
         <ul>
           {usersDetails.map((user, index) => (
-            <Link
+            <NavLink
               to={`/users/${user.id}`}
-              style={{ textDecoration: "none", color: "black" }}
+              style={({ isActive }) => ({
+                color: isActive ? "white" : "black",
+                textDecoration: "none",
+              })}
               key={index}
             >
-              <ListItemButton
+              <StyledButtonList
                 selected={selectedIndex.index === index}
                 onClick={() => handleListItemClick(index)}
                 alignItems="flex-start"
@@ -66,21 +73,12 @@ export default function UsersAvatar() {
                   <ListItemText
                     primary={user.name}
                     secondary={
-                      <Fragment>
-                        <Typography
-                          sx={{ display: "inline" }}
-                          component="span"
-                          variant="body2"
-                          color="text.primary"
-                        >
-                          {user.email}
-                        </Typography>
-                      </Fragment>
+                      <Typography variant={"body2"}>{user.email}</Typography>
                     }
                   />
                 ) : null}
-              </ListItemButton>
-            </Link>
+              </StyledButtonList>
+            </NavLink>
           ))}
         </ul>
       </li>

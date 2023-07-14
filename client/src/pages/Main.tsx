@@ -1,4 +1,4 @@
-import { Container, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import UserForm from "../components/UserForm";
 import UsersAvatar from "../components/UsersAvatas";
 import { useCallback, useEffect, useState } from "react";
@@ -33,17 +33,14 @@ const Main = () => {
   const userDetails = useSelector(selectUser);
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log("MAIN Rendered", usersDetailts);
-
   /**
    * Fetches users' data and stores them into Redux
    */
   const fetchUsersHandler = useCallback(async () => {
     setIsLoading(true);
-    console.log("useCallback");
     const myUsers: UsersDetails[] = usersDetailts?.users;
 
-    myUsers?.map((u, index) => {
+    myUsers?.map((u) => {
       const existingUser = savedUsers.find((userId) => userId.id === u.id);
       if (!existingUser) {
         const usersStore = {
@@ -58,31 +55,31 @@ const Main = () => {
     });
   }, []);
 
+  /**
+   * Effects
+   */
   useEffect(() => {
     fetchUsersHandler();
-    console.log("useEffect");
   }, [fetchUsersHandler]);
 
   return (
-    <Container>
-      <Grid container>
-        <Grid item xs={3} md={6}>
-          <UsersAvatar />
-        </Grid>
-        <Grid item xs={9} md={6}>
-          {userDetails?.id ? (
-            <>
-              <UserForm />
-            </>
-          ) : (
-            <>
-              {!isLoading && <div> Select a user to edit </div>}
-              {isLoading && <p> Loading...</p>}
-            </>
-          )}
-        </Grid>
+    <Grid container>
+      <Grid item xs={3} md={6}>
+        <UsersAvatar />
       </Grid>
-    </Container>
+      <Grid item xs={9} md={6}>
+        {userDetails?.id ? (
+          <>
+            <UserForm />
+          </>
+        ) : (
+          <>
+            {!isLoading && <div> Select a user to edit </div>}
+            {isLoading && <p> Loading...</p>}
+          </>
+        )}
+      </Grid>
+    </Grid>
   );
 };
 
