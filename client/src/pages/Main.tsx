@@ -5,8 +5,11 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { selectAllUsers, getAllUsers, selectUser } from "../store/users-slice";
 import { useSelector } from "react-redux";
-import { json, useLoaderData, useRouteLoaderData } from "react-router-dom";
+import { json, useRouteLoaderData } from "react-router-dom";
 
+/**
+ * Interfaces
+ */
 export interface UsersDetails {
   address: string;
   company: string;
@@ -20,19 +23,27 @@ export interface UsersDetails {
 export interface UsersDetailsInterface extends Array<UsersDetails> {}
 
 const Main = () => {
-  const usersDetailts: any = useLoaderData();
+  /**
+   * Hooks
+   */
+  const usersDetailts: any = useRouteLoaderData("users-details");
+
   const dispatch = useDispatch();
   const savedUsers = useSelector(selectAllUsers);
   const userDetails = useSelector(selectUser);
   const [isLoading, setIsLoading] = useState(false);
-  console.log("MAIN");
 
+  console.log("MAIN Rendered", usersDetailts);
+
+  /**
+   * Fetches users' data and stores them into Redux
+   */
   const fetchUsersHandler = useCallback(async () => {
     setIsLoading(true);
-
+    console.log("useCallback");
     const myUsers: UsersDetails[] = usersDetailts?.users;
 
-    myUsers?.map((u) => {
+    myUsers?.map((u, index) => {
       const existingUser = savedUsers.find((userId) => userId.id === u.id);
       if (!existingUser) {
         const usersStore = {
@@ -49,8 +60,8 @@ const Main = () => {
 
   useEffect(() => {
     fetchUsersHandler();
+    console.log("useEffect");
   }, [fetchUsersHandler]);
-
 
   return (
     <Container>
@@ -59,7 +70,7 @@ const Main = () => {
           <UsersAvatar />
         </Grid>
         <Grid item xs={9} md={6}>
-          {userDetails.id ? (
+          {userDetails?.id ? (
             <>
               <UserForm />
             </>
@@ -77,6 +88,10 @@ const Main = () => {
 
 export default Main;
 
+/**
+ * Get Request
+ * @returns response
+ */
 export async function loader() {
   const response = await fetch("http://localhost:3000/users");
   if (!response.ok) {

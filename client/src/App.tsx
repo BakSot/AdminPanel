@@ -26,6 +26,8 @@ const router = createBrowserRouter([
       {
         path: "users",
         element: <UsersRootLayout />,
+        loader: () => import("./pages/Main").then((module) => module.loader()),
+        id: "users-details",
         children: [
           {
             index: true,
@@ -34,11 +36,10 @@ const router = createBrowserRouter([
                 <Main />
               </Suspense>
             ),
-            loader: () =>
-              import("./pages/Main").then((module) => module.loader()),
           },
           {
             path: ":uid",
+            id: "selected-user",
             element: (
               <Suspense fallback={<p>Loading...</p>}>
                 <Main />

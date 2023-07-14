@@ -67,6 +67,8 @@ const FormTextField = ({
   });
   const watchAllFields = watch();
 
+  console.log("FormTextField Rendered");
+
   useEffect(() => {
     reset({
       name: name,
@@ -78,7 +80,9 @@ const FormTextField = ({
     dispatch(handleCancelButton(false));
   }, [name, email, phone, address, company, resetForm]);
 
-  dispatch(toggleSaveBtn(isDirty));
+  useEffect(() => {
+    dispatch(toggleSaveBtn(isDirty));
+  }, [isDirty]);
 
   const updatedUser: IUserForm = { ...watchAllFields, id, photo };
 

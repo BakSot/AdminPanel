@@ -1,9 +1,10 @@
-import React from "react";
-import ReactDOM from "react-dom";
 import App from "./App";
+import ReactDOM from "react-dom/client";
 
-// if (process.env.NODE_ENV === "development") {
-//   const { worker } = require("./resources/mocks/index");
-//   worker.start();
-// }
-ReactDOM.render(<App />, document.getElementById("root"));
+/**
+ * The main application component
+ */
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
+root.render(<App />);

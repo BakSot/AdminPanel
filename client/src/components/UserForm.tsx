@@ -6,6 +6,7 @@ import FormTextField from "./form/FormTextField";
 const UserForm = () => {
   const userDetails = useSelector(selectUser);
   const desktop = useMediaQuery("(min-width:600px)");
+  console.log("UserForm Rendered");
 
   return (
     <>

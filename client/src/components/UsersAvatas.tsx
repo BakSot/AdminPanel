@@ -14,30 +14,35 @@ import {
 import { useDispatch } from "react-redux";
 import { useMediaQuery } from "@mui/material";
 import { StyledList } from "./styled";
-import { json, useLoaderData } from "react-router-dom";
+import { json, useRouteLoaderData } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 export default function UsersAvatar() {
   const desktop = useMediaQuery("(min-width:600px)");
-  const fetchedUsers: any = useLoaderData();
+  const fetchedUsers: any = useRouteLoaderData("users-details");
+  const selectedUser: any = useRouteLoaderData("selected-user");
+
   const usersDetails = useSelector(selectAllUsers);
   const dispatch = useDispatch();
   const selectedIndex = useSelector(selectClickedUser);
 
-  const handleListItemClick = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    index: number,
-    u_id: string
-  ) => {
-    const selectedUser = {
+  console.log("fetchedUsers", fetchedUsers);
+  console.log("selectedUser", selectedUser);
+
+  /**
+   * Handles the selection of user on click
+   */
+  const handleListItemClick = (index: number) => {
+    const opendUser = {
       index: index,
     };
-    dispatch(openUser(selectedUser));
+    dispatch(openUser(opendUser));
   };
 
   useEffect(() => {
-    dispatch(getUser(fetchedUsers));
-  }, [fetchedUsers]);
+    dispatch(getUser(selectedUser));
+    console.log("USE EFFECT @ AVATAR");
+  }, [selectedUser]);
 
   return (
     <StyledList desktop={desktop.toString()} subheader={<li />}>
@@ -45,13 +50,13 @@ export default function UsersAvatar() {
         <ul>
           {usersDetails.map((user, index) => (
             <Link
-              to={user.id}
+              to={`/users/${user.id}`}
               style={{ textDecoration: "none", color: "black" }}
+              key={index}
             >
               <ListItemButton
-                key={index}
                 selected={selectedIndex.index === index}
-                onClick={(event) => handleListItemClick(event, index, user.id)}
+                onClick={() => handleListItemClick(index)}
                 alignItems="flex-start"
               >
                 <ListItemAvatar>
@@ -83,6 +88,11 @@ export default function UsersAvatar() {
   );
 }
 
+/**
+ * Get Request for selected User
+ * @param param0 id
+ * @returns response
+ */
 export async function loader({ params }: { params: any }) {
   const id = params.uid;
   const response = await fetch(`/users/${id}`);
