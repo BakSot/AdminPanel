@@ -26,7 +26,7 @@ const Main = () => {
   /**
    * Hooks
    */
-  const usersDetailts: any = useRouteLoaderData("users-details");
+  const usersDetailts = useRouteLoaderData("users-details") as UsersDetails[];
 
   const dispatch = useDispatch();
   const savedUsers = useSelector(selectAllUsers);
@@ -38,9 +38,8 @@ const Main = () => {
    */
   const fetchUsersHandler = useCallback(async () => {
     setIsLoading(true);
-    const myUsers: UsersDetails[] = usersDetailts?.users;
 
-    myUsers?.map((u) => {
+    usersDetailts?.map((u) => {
       const existingUser = savedUsers?.find((userId) => userId?.id === u?.id);
       if (!existingUser) {
         const usersStore = {

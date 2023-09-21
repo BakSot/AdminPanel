@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
@@ -9,6 +9,7 @@ import {
   selectClickedUser,
   selectAllUsers,
   getUser,
+  IUserForm,
 } from "../store/users-slice";
 import { useDispatch } from "react-redux";
 import { useMediaQuery } from "@mui/material";
@@ -25,8 +26,7 @@ export default function UsersAvatar() {
    * Hooks
    */
   const desktop = useMediaQuery("(min-width:600px)");
-  const fetchedUsers: any = useRouteLoaderData("users-details");
-  const selectedUser: any = useRouteLoaderData("selected-user");
+  const selectedUser = useRouteLoaderData("selected-user") as IUserForm;
   const usersDetails = useSelector(selectAllUsers);
   const dispatch = useDispatch();
   const selectedIndex = useSelector(selectClickedUser);
@@ -48,39 +48,43 @@ export default function UsersAvatar() {
     dispatch(getUser(selectedUser));
   }, [selectedUser]);
 
+  const memoizedUsersDetails = useMemo(() => {
+    return usersDetails?.map((user, index) => {
+      return (
+        <NavLink
+          to={`/users/${user?.id}`}
+          style={({ isActive }) => ({
+            color: isActive ? "white" : "black",
+            textDecoration: "none",
+          })}
+          key={index}
+        >
+          <StyledButtonList
+            selected={selectedIndex?.index === index}
+            onClick={() => handleListItemClick(index)}
+            alignItems="flex-start"
+          >
+            <ListItemAvatar>
+              <Avatar alt="Travis Howard" src={user?.photo} />
+            </ListItemAvatar>
+            {desktop && (
+              <ListItemText
+                primary={user?.name}
+                secondary={
+                  <Typography variant={"body2"}>{user?.email}</Typography>
+                }
+              />
+            )}
+          </StyledButtonList>
+        </NavLink>
+      );
+    });
+  }, [usersDetails]);
+
   return (
     <StyledList desktop={desktop.toString()} subheader={<li />}>
       <li key={`section-${"sectionId"}`}>
-        <ul>
-          {usersDetails?.map((user, index) => (
-            <NavLink
-              to={`/users/${user?.id}`}
-              style={({ isActive }) => ({
-                color: isActive ? "white" : "black",
-                textDecoration: "none",
-              })}
-              key={index}
-            >
-              <StyledButtonList
-                selected={selectedIndex?.index === index}
-                onClick={() => handleListItemClick(index)}
-                alignItems="flex-start"
-              >
-                <ListItemAvatar>
-                  <Avatar alt="Travis Howard" src={user?.photo} />
-                </ListItemAvatar>
-                {desktop ? (
-                  <ListItemText
-                    primary={user?.name}
-                    secondary={
-                      <Typography variant={"body2"}>{user?.email}</Typography>
-                    }
-                  />
-                ) : null}
-              </StyledButtonList>
-            </NavLink>
-          ))}
-        </ul>
+        <ul>{memoizedUsersDetails}</ul>
       </li>
     </StyledList>
   );
@@ -91,8 +95,10 @@ export default function UsersAvatar() {
  * @param param0 id
  * @returns response
  */
+
 export async function loader({ params }: { params: any }) {
   const id = params?.uid;
+
   const response = await fetch(`/users/${id}`);
   if (!response.ok) {
     return json(

@@ -7,12 +7,19 @@ import {
 } from "../store/users-slice";
 import { useDispatch } from "react-redux";
 import { CancelButton, SaveButton } from "./styled";
+import { FieldErrors } from "react-hook-form";
 
 /**
  * Interfaces
  */
 interface IActionButtons {
-  errors: any;
+  errors: FieldErrors<{
+    name: string;
+    email: string | undefined;
+    address: string | undefined;
+    phone: string;
+    company: string | undefined;
+  }>;
 }
 
 /**
@@ -44,7 +51,7 @@ const ActionButtons = ({ errors }: IActionButtons) => {
   const cancelBtnHandler = () => {
     dispatch(handleCancelButton(true));
   };
-
+  console.log(errors);
   return (
     <Stack spacing={1} direction="row-reverse" paddingTop={"20px"}>
       <SaveButton

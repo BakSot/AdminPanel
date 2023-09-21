@@ -65,6 +65,7 @@ const FormTextField = ({
     resolver: yupResolver(schema),
   });
   const watchAllFields = watch();
+  console.log(errors);
 
   /**
    * Effects
